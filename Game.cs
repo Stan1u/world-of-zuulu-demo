@@ -77,15 +77,15 @@ namespace WorldOfZuul
     switch (currentRoom.ShortDescription)
     {
         case "Village":
-            Console.WriteLine("You talk to yourself, madman?!"); // Placeholder dialog
+            Console.WriteLine("You talk to yourself, madman?!"); //needs to be changed
             break;
 
         case "Well":
             Console.WriteLine(
                 "Amara: Leader, our well is in terrible condition. People are falling sick because of the polluted water. We need a solution, but I can’t decide what’s best. What should we do?\n" +
-                "1. Install a high-quality water filtration system, ensuring clean water for the village.\n" +
-                "2. Clean the well thoroughly and educate villagers on protecting it from contamination.\n" +
-                "3. Ignore the problem for now and hope the water improves naturally."
+                "1. Install a high-quality water filtration system, ensuring clean water for the village.\n" + //best option
+                "2. Clean the well thoroughly and educate villagers on protecting it from contamination.\n" + //good option
+                "3. Ignore the problem for now and hope the water improves naturally." //worst option
             );
             string wellChoice = Console.ReadLine();
             switch (wellChoice)
