@@ -57,25 +57,25 @@
 
             while (true)
             {
-                string chooise2 = Console.ReadLine();
-                if (chooise2 == "1")
+                string wellChoice = Console.ReadLine();
+                if (wellChoice == "1")
                 {
                     foreach (Item item in inventory.items)
                     {
                         if (item.Name == reqired_item)
                         {
-                            Console.WriteLine("You entered ");
+                            Console.WriteLine("You entered");
                             inventory.GiveItem(item);
                             return true;
                         }
                     }
 
-                    Console.WriteLine("You can't enter ");
+                    Console.WriteLine("You can't enter because you do not have the required item. Find the right item and come back then.");
                     return false;
 
 
                 }
-                else if (chooise2 == "2")
+                else if (wellChoice == "2")
                 {
                     return false;
                 }
