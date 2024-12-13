@@ -7,6 +7,7 @@
         public Dictionary<string, Room> Exits { get; private set; } = new();
         public string reqired_item { get; private set; }
         public string dispise_item { get; private set; }
+         public bool IsLocked { get; private set; } // New property to indicate if the room is locked
         public Room( string shortDesc, string longDesc, string dispise_item = null, string reqired_item = null)
         {
             ShortDescription = shortDesc;
@@ -29,9 +30,24 @@
                 Exits[direction] = neighbor;
         }
 
-        
+         public void LockRoom()
+        {
+            IsLocked = true; // Lock the room
+        }
+
+        public void UnlockRoom()
+        {
+            IsLocked = false; // Unlock the room
+        }
+
         public bool Check(Inventory_functionality inventory)
         {
+            if (IsLocked)
+            {
+                Console.WriteLine($"The {ShortDescription} is locked. You cannot enter.");
+                return false;
+            }
+
             if (string.IsNullOrEmpty(reqired_item) && string.IsNullOrEmpty(dispise_item))
             {
                 return true;
@@ -70,7 +86,7 @@
                         }
                     }
 
-                    Console.WriteLine("You can't enter because you do not have the required item. Find the right item and come back then.");
+                    Console.WriteLine("You can't enter because you do not have the required item.");
                     return false;
 
 
