@@ -1,0 +1,14 @@
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/Project_.GeneratedMSBuildEditorConfig.editorconfig
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/Project_.AssemblyInfoInputs.cache
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/Project_.AssemblyInfo.cs
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/Project_.csproj.CoreCompileInputs.cache
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/bin/Debug/net8.0/Project_
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/bin/Debug/net8.0/Project_.deps.json
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/bin/Debug/net8.0/Project_.runtimeconfig.json
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/bin/Debug/net8.0/Project_.dll
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/bin/Debug/net8.0/Project_.pdb
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/Project_.dll
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/refint/Project_.dll
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/Project_.pdb
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/Project_.genruntimeconfig.cache
+/Users/volkanshukei/Downloads/School/Object Oriented Programming/Project_/Project_/obj/Debug/net8.0/ref/Project_.dll
