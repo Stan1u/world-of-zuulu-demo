@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Patryk\\Desktop\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj": {}
+    "C:\\Users\\Me\\Documents\\GitHub\\world-of-zuulu-demo_newroom\\WorldOfZuul.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Patryk\\Desktop\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj": {
+    "C:\\Users\\Me\\Documents\\GitHub\\world-of-zuulu-demo_newroom\\WorldOfZuul.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Patryk\\Desktop\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
+        "projectUniqueName": "C:\\Users\\Me\\Documents\\GitHub\\world-of-zuulu-demo_newroom\\WorldOfZuul.csproj",
         "projectName": "WorldOfZuul",
-        "projectPath": "C:\\Users\\Patryk\\Desktop\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
-        "packagesPath": "C:\\Users\\Patryk\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Patryk\\Desktop\\WorldOfZuul\\WorldOfZuul\\obj\\",
+        "projectPath": "C:\\Users\\Me\\Documents\\GitHub\\world-of-zuulu-demo_newroom\\WorldOfZuul.csproj",
+        "packagesPath": "C:\\Users\\Me\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Me\\Documents\\GitHub\\world-of-zuulu-demo_newroom\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Patryk\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Me\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -32,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -53,30 +48,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.33, 6.0.33]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.33, 6.0.33]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.33, 6.0.33]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.33, 6.0.33]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\Patryk\\.dotnet\\sdk\\8.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\Me\\.dotnet\\sdk\\6.0.418\\RuntimeIdentifierGraph.json"
         }
       }
     }
