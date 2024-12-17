@@ -1,44 +1,44 @@
-﻿namespace WorldOfZuul
+﻿using System;
+
+namespace WorldOfZuul
 {
     public class Game
     {
         private Room? currentRoom;
         private Room? previousRoom;
+        private Inventory_functionality inventory;
 
         public Game()
         {
             CreateRooms();
+            inventory = new Inventory_functionality();
+
+            inventory.AddItem(new Item("house key", "just a key to Ur house")); //is this used in the game?
         }
 
         private void CreateRooms()
         {
-  
-            Room? outside = new("Outside", "You are standing outside the main entrance of the university. To the east is a large building, to the south is a computing lab, and to the west is the campus pub.");
-            Room? theatre = new("Theatre", "You find yourself inside a large lecture theatre. Rows of seats ascend up to the back, and there's a podium at the front. It's quite dark and quiet.");
-            Room? pub = new("Pub", "You've entered the campus pub. It's a cozy place, with a few students chatting over drinks. There's a bar near you and some pool tables at the far end.");
-            Room? lab = new("Lab", "You're in a computing lab. Desks with computers line the walls, and there's an office to the east. The hum of machines fills the room.");
-            Room? office = new("Office", "You've entered what seems to be an administration office. There's a large desk with a computer on it, and some bookshelves lining one wall.");
+            Room? village = new("Village", "You are standing in the main area of AquaVale village.");
+            Room? well = new("Well", "You enter the village well. The air is heavy with the smell of stagnant water, and you notice algae growing around the edges. A concerned villager named Amara approaches you. She is a local water keeper, deeply invested in the well’s condition. Write 'talk' to talk to Amara", "Emerald");
+            Room? sanitation_area = new("Sanitation Area", "The sanitation area is an open plot of land that villagers currently use for waste disposal. The ground is littered with refuse, and a foul smell permeates the air. A young carpenter named Malik approaches you. He’s eager to help but unsure how to proceed. Write 'talk' to talk to Malik");
+            Room? lab = new("Lab", "You're in an old building, it looks like some kind of ancient loboratory. Air is very humid, you noticed watter dripping from ceiling and mold growing on surrounding objects. Old man in white coat is operating some devices, he looks busy. Write 'talk' to start conversation" , "", "Emerald" ); //room must be edited
+            Room? office = new("Office", "You've entered an administration office."); //room must be edited
 
-            outside.SetExits(null, theatre, lab, pub); // North, East, South, West
-
-            theatre.SetExit("west", outside);
-
-            pub.SetExit("east", outside);
-
-            lab.SetExits(outside, office, null, null);
-
+            village.SetExits(null, well, lab, sanitation_area);
+            well.SetExit("west", village);
+            sanitation_area.SetExit("east", village);
+            lab.SetExits(village, office, null, null);
             office.SetExit("west", lab);
 
-            currentRoom = outside;
+            currentRoom = village;
         }
 
         public void Play()
         {
             Parser parser = new();
-
             PrintWelcome();
-
             bool continuePlaying = true;
+
             while (continuePlaying)
             {
                 Console.WriteLine(currentRoom?.ShortDescription);
@@ -60,9 +60,9 @@
                     continue;
                 }
 
-                switch(command.Name)
+                switch (command.Name)
                 {
-                    case "look":
+                    case "explore":
                         Console.WriteLine(currentRoom?.LongDescription);
                         break;
 
@@ -72,6 +72,113 @@
                         else
                             currentRoom = previousRoom;
                         break;
+                    
+                   case "talk":
+    if (currentRoom?.ShortDescription != null)
+    {
+        switch (currentRoom.ShortDescription)
+        {
+            case "Village":
+                Console.WriteLine("You talk to yourself, madman?!"); // Needs to be changed
+                break;
+
+            case "Well":
+                Console.WriteLine(
+                    "Amara: Leader, our well is in terrible condition. People are falling sick because of the polluted water. We need a solution, but I can’t decide what’s best. What should we do?\n" +
+                    "1. Install a high-quality water filtration system, ensuring clean water for the village.\n" +
+                    "2. Clean the well thoroughly and educate villagers on protecting it from contamination.\n" +
+                    "3. Ignore the problem for now and hope the water improves naturally."
+                );
+                string? wellChoice = Console.ReadLine();
+                switch (wellChoice)
+                {
+                    case "1":
+                        Console.WriteLine("You chose the most effective option. You receive an emerald from Amara.");
+                        inventory.AddItem(new Item("Emerald", "A shiny emerald given by Amara."));
+                        break;
+                    case "2":
+                        Console.WriteLine("You chose a moderately good option, some maintenance will be required. You receive red powder from Amara.");
+                        inventory.AddItem(new Item("Red Powder", "A mysterious red powder given by Amara."));
+                        break;
+                    case "3":
+                        Console.WriteLine("Your option is ineffective and leads to further sickness in the village. Amara is disappointed.");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please choose 1, 2, or 3.");
+                        break;
+                }
+                currentRoom.LockRoom(); // Lock the current room after interaction
+                currentRoom = currentRoom.Exits["west"]; // Return to the Village
+                Console.WriteLine("You return to the Village. The Well is now locked.");
+                break;
+            
+            case "Lab":
+                Console.WriteLine(
+                    "Scientist: Leader, our watter pipes are leaking, damaging my equipment. I've noticed weird health symptoms since this mold started growing everywhere. I need your help, what should I do?\n" +
+                    "1. Repair pipes, remove all mold and ensure good air circulation in building.\n" +
+                    "2. Tell him to go to doctor and get some meds.\n" +
+                    "3. Tell him he looks smart enough to solve this problem himself."
+                );
+                string? labChoice = Console.ReadLine();
+                switch (labChoice)
+                {
+                    case "1":
+                        Console.WriteLine("You chose the most effective option. You receive an emerald from Scientist.");
+                        inventory.AddItem(new Item("Emerald", "A shiny emerald given by Scientist."));
+                        break;
+                    case "2":
+                        Console.WriteLine("You chose a moderately good option, some maintenance will be required. You receive red powder from Scientist.");
+                        inventory.AddItem(new Item("Red Powder", "A mysterious red powder given by Scientist."));
+                        break;
+                    case "3":
+                        Console.WriteLine("Your option is ineffective and leads to further sickness. Scientist is disappointed.");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please choose 1, 2, or 3.");
+                        break;
+                }
+                break;
+
+            case "Sanitation Area":
+                Console.WriteLine(
+                    "Malik: Leader, this area desperately needs proper sanitation facilities. The villagers are falling ill due to poor hygiene. What should we do?\n" +
+                    "1. Build durable toilets and washing stations using sustainable materials.\n" +
+                    "2. Build temporary latrines while planning permanent facilities.\n" +
+                    "3. Do nothing and tell villagers to manage as they are."
+                );
+                string? sanitationChoice = Console.ReadLine();
+                switch (sanitationChoice)
+                {
+                    case "1":
+                        Console.WriteLine("You chose the most effective option. Malik rewards you with a sapphire.");
+                        inventory.AddItem(new Item("Sapphire", "A radiant sapphire given by Malik."));
+                        break;
+                    case "2":
+                        Console.WriteLine("You chose a moderately good option. Malik provides you with wooden planks for future use.");
+                        inventory.AddItem(new Item("Wooden Planks", "Sturdy planks provided by Malik."));
+                        break;
+                    case "3":
+                        Console.WriteLine("Your decision disappoints Malik and leaves the sanitation area in poor condition.");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please choose 1, 2, or 3.");
+                        break;
+                }
+                currentRoom.LockRoom(); // Lock the current room after interaction
+                currentRoom = currentRoom.Exits["east"]; // Return to the Village
+                Console.WriteLine("You return to the Village. The Sanitation Area is now locked.");
+                break;
+
+            default:
+                Console.WriteLine("There's no one here to talk to.");
+                break;
+        }
+    }
+    else
+    {
+        Console.WriteLine("You're not in a valid room to talk.");
+    }
+    break;
 
                     case "north":
                     case "south":
@@ -88,21 +195,29 @@
                         PrintHelp();
                         break;
 
+                    case "show":
+                        inventory.ShowItems(); //doesnt work?
+                        break;
+
                     default:
-                        Console.WriteLine("I don't know what command.");
+                        Console.WriteLine("I don't know that command.");
                         break;
                 }
             }
 
-            Console.WriteLine("Thank you for playing World of Zuul!");
+            Console.WriteLine("Thank you for playing World of Zuul!"); //needs to be changed
         }
+        
 
         private void Move(string direction)
         {
             if (currentRoom?.Exits.ContainsKey(direction) == true)
             {
-                previousRoom = currentRoom;
-                currentRoom = currentRoom?.Exits[direction];
+                if (currentRoom.Exits[direction].Check(inventory))
+                {
+                    previousRoom = currentRoom;
+                    currentRoom = currentRoom?.Exits[direction];
+                }
             }
             else
             {
@@ -110,25 +225,27 @@
             }
         }
 
-
         private static void PrintWelcome()
         {
-            Console.WriteLine("Welcome to the World of Zuul!");
-            Console.WriteLine("World of Zuul is a new, incredibly boring adventure game.");
+            Console.WriteLine("The village of AquaVale has been your home for as long as you can remember.\nNestled between rolling hills and a winding river, it was once a place of abundance and harmony.\nBut over the years, things have taken a turn for the worse.\nThe river, once a lifeline for the community, now carries pollutants from upstream.\nThe well, a vital source of water, has fallen into neglect, and sanitation facilities are practically nonexistent.\nSickness is rampant, and the villagers are losing hope.");
+            Console.WriteLine("\nAs the newly chosen leader of AquaVale, you carry the weight of responsibility.\nThe people have placed their trust in you to bring back the village's former glory.\nYour goal is clear: ensure clean water and proper sanitation for everyone.\nBut resources are scarce, and time is limited.\nWith only ten turns to make a difference, every decision counts.");
+            Console.WriteLine("\nWill you lead AquaVale to a brighter future, or will the village continue to suffer under the weight of its challenges?");
             PrintHelp();
             Console.WriteLine();
         }
 
         private static void PrintHelp()
         {
-            Console.WriteLine("You are lost. You are alone. You wander");
-            Console.WriteLine("around the university.");
+            Console.WriteLine("You are lost. You are alone. You wander around the university.");
             Console.WriteLine();
             Console.WriteLine("Navigate by typing 'north', 'south', 'east', or 'west'.");
-            Console.WriteLine("Type 'look' for more details.");
+            Console.WriteLine("Type 'explore' to explore around the area you are in.");
             Console.WriteLine("Type 'back' to go to the previous room.");
             Console.WriteLine("Type 'help' to print this message again.");
             Console.WriteLine("Type 'quit' to exit the game.");
+            Console.WriteLine("Type 'show' to display your inventory.");
         }
+
+       }
     }
-}
+    
