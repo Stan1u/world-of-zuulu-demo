@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Principal;
+using Microsoft.VisualBasic;
 
 namespace WorldOfZuul
 {
@@ -6,23 +8,41 @@ namespace WorldOfZuul
     {
         private Room? currentRoom;
         private Room? previousRoom;
+        private Room? village;
+        private Room? finalRoom;
+        private Room? temp;
         private Inventory_functionality inventory;
+        private int roomcount;
+        private Boolean labQuest = true;
+        private Boolean westQuest = true;
+        private Boolean eastQuest = true;
 
         public Game()
         {
             CreateRooms();
             inventory = new Inventory_functionality();
-
-            inventory.AddItem(new Item("house key", "just a key to Ur house")); //is this used in the game?
+            
         }
 
         private void CreateRooms()
         {
-            Room? village = new("Village", "You are standing in the main area of AquaVale village.");
-            Room? well = new("Well", "You enter the village well. The air is heavy with the smell of stagnant water, and you notice algae growing around the edges. A concerned villager named Amara approaches you. She is a local water keeper, deeply invested in the well’s condition. Write 'talk' to talk to Amara", "Emerald");
-            Room? sanitation_area = new("Sanitation Area", "The sanitation area is an open plot of land that villagers currently use for waste disposal. The ground is littered with refuse, and a foul smell permeates the air. A young carpenter named Malik approaches you. He’s eager to help but unsure how to proceed. Write 'talk' to talk to Malik");
-            Room? lab = new("Lab", "You're in an old building, it looks like some kind of ancient loboratory. Air is very humid, you noticed watter dripping from ceiling and mold growing on surrounding objects. Old man in white coat is operating some devices, he looks busy. Write 'talk' to start conversation" , "", "Emerald" ); //room must be edited
-            Room? office = new("Office", "You've entered an administration office."); //room must be edited
+            //upgraded room descriptions&navigation, add strings to rooms you made
+            //// you can put all these long strings from this page in separate cs or format it to fit page
+            //// it make the code very ugly
+            
+            Room? village = new("Village", "You see well on east, old building on south and sanitation area on west. There seems to be some passage on north, but unknown force prevents you from entering","You are standing in the main area of AquaVale village.");
+            Room? well = new("Well", "***ADD YOUR STRING***" ,"You enter the village well. The air is heavy with the smell of stagnant water, and you notice algae growing around the edges. A concerned villager named Amara approaches you. She is a local water keeper, deeply invested in the well’s condition. Write 'talk' to talk to Amara", "Emerald");
+            Room? sanitation_area = new("Sanitation Area", "***ADD YOUR STRING***", "The sanitation area is an open plot of land that villagers currently use for waste disposal. The ground is littered with refuse, and a foul smell permeates the air. A young carpenter named Malik approaches you. He’s eager to help but unsure how to proceed. Write 'talk' to talk to Malik");
+            Room? lab = new("Lab","You see office door on east and village on north" ,"You entered old building, it looks like some kind of ancient laboratory. Air is very humid, you noticed watter dripping from ceiling and mold growing on surrounding objects. Old man in white coat is operating some machinery, he looks busy. Write 'talk' to start conversation"  ); 
+                    //I'll add some stuff in office, make new room if u have more content
+            Room? office = new("Office", "You see some smart device. It introduced itself as Ciri. It asked you to talk with it, if you want to play a game. Exit to lab is on east" ,"You entered an office. Everything looks normal, but atmosphere here gives you goosebumps, something feels off.", "", "Office key");
+            Room? finalRoom = new("Mysterious Temple", "You can see alien looking machine. You never saw anything like that, it seems like from future. It looks intelligent. It is watching you. The exit to village disappeared. There is no way back.", "You entered mysterious room which wasn't there few moments back. It looks like some kind of temple." );
+
+            roomcount = 3; //zones that need to be completed before unlocking final room
+                           //increase if u add some rooms, make it -- when you complete the room
+                           
+            this.village = village;
+            this.finalRoom = finalRoom;
 
             village.SetExits(null, well, lab, sanitation_area);
             well.SetExit("west", village);
@@ -41,14 +61,22 @@ namespace WorldOfZuul
 
             while (continuePlaying)
             {
-                Console.WriteLine(currentRoom?.ShortDescription);
+
+                if (roomcount == 0)
+                {
+                    village.SetExit("north", finalRoom);
+                    village.SetDirections("The passage to north is now open. Something is telling you to enter");
+                    village.SetDescription("The passage to north is now open. Something is telling you to enter");
+                }
+                
+                Console.WriteLine("\n"+currentRoom?.ShortDescription);
                 Console.Write("> ");
 
                 string? input = Console.ReadLine();
 
                 if (string.IsNullOrEmpty(input))
                 {
-                    Console.WriteLine("Please enter a command.");
+                    Console.WriteLine("\nPlease enter a command.");
                     continue;
                 }
 
@@ -56,21 +84,26 @@ namespace WorldOfZuul
 
                 if (command == null)
                 {
-                    Console.WriteLine("I don't know that command.");
+                    Console.WriteLine("\nI don't know that command.");
                     continue;
                 }
 
                 switch (command.Name)
                 {
                     case "explore":
-                        Console.WriteLine(currentRoom?.LongDescription);
+                        Console.WriteLine(currentRoom?.Directions);
                         break;
 
                     case "back":
-                        if (previousRoom == null)
-                            Console.WriteLine("You can't go back from here!");
+                        if (previousRoom == null||currentRoom == finalRoom)
+                            Console.WriteLine("\nYou can't go back from here!");
                         else
+                        {
+                            temp = currentRoom;
                             currentRoom = previousRoom;
+                            previousRoom = temp;
+                            Console.WriteLine("\n"+currentRoom?.LongDescription);
+                        }
                         break;
                     
                    case "talk":
@@ -78,105 +111,149 @@ namespace WorldOfZuul
     {
         switch (currentRoom.ShortDescription)
         {
-            case "Village":
-                Console.WriteLine("You talk to yourself, madman?!"); // Needs to be changed
+            
+            //someone can add multiple endings based on items you earn from quests here
+            
+            case "Mysterious Temple":
+                
+                Console.WriteLine(
+                    "\nThe machine telepathically welcomes you. You can feel it's incredibly powerful presence. It thanks you for making the world better place. It'll reward you.\n" +
+                    "The rift appears in the air and sucks you in to the Void. Your sense of self disappears. You're everything. You're nothing. You're enjoying peaceful emptiness for eternity.\n\n" +
+                    "GAME OVER"
+                );
+                Environment.Exit(1);
                 break;
 
+            case "Village":
+                
+                Console.WriteLine("\nYou talk to yourself, madman?!");
+                break;
+
+            
             case "Well":
-                Console.WriteLine(
-                    "Amara: Leader, our well is in terrible condition. People are falling sick because of the polluted water. We need a solution, but I can’t decide what’s best. What should we do?\n" +
-                    "1. Install a high-quality water filtration system, ensuring clean water for the village.\n" +
-                    "2. Clean the well thoroughly and educate villagers on protecting it from contamination.\n" +
-                    "3. Ignore the problem for now and hope the water improves naturally."
-                );
-                string? wellChoice = Console.ReadLine();
-                switch (wellChoice)
+                
+                if (eastQuest)
                 {
-                    case "1":
-                        Console.WriteLine("You chose the most effective option. You receive an emerald from Amara.");
-                        inventory.AddItem(new Item("Emerald", "A shiny emerald given by Amara."));
-                        break;
-                    case "2":
-                        Console.WriteLine("You chose a moderately good option, some maintenance will be required. You receive red powder from Amara.");
-                        inventory.AddItem(new Item("Red Powder", "A mysterious red powder given by Amara."));
-                        break;
-                    case "3":
-                        Console.WriteLine("Your option is ineffective and leads to further sickness in the village. Amara is disappointed.");
-                        break;
-                    default:
-                        Console.WriteLine("Invalid choice. Please choose 1, 2, or 3.");
-                        break;
+                    Console.WriteLine(
+                        "\nAmara: Leader, our well is in terrible condition. People are falling sick because of the polluted water. We need a solution, but I can’t decide what’s best. What should we do?\n" +
+                        "1. Install a high-quality water filtration system, ensuring clean water for the village.\n" +
+                        "2. Clean the well thoroughly and educate villagers on protecting it from contamination.\n" +
+                        "3. Ignore the problem for now and hope the water improves naturally."
+                    );
+                    string? wellChoice = Console.ReadLine();
+                    switch (wellChoice)
+                    {
+                        case "1":
+                            Console.WriteLine("\nYou chose the most effective option. You receive an emerald from Amara.");
+                            inventory.AddItem(new Item("Emerald", "A shiny emerald given by Amara."));
+                            break;
+                        case "2":
+                            Console.WriteLine("\nYou chose a moderately good option, some maintenance will be required. You receive red powder from Amara.");
+                            inventory.AddItem(new Item("Red Powder", "A mysterious red powder given by Amara."));
+                            break;
+                        case "3":
+                            Console.WriteLine("\nYour option is ineffective and leads to further sickness in the village. Amara is disappointed.");
+                            break;
+                        default:
+                            Console.WriteLine("\nInvalid choice. Please choose 1, 2, or 3.");
+                            break;
+                    }
+                    
+                    roomcount--;
+                    eastQuest = false;
                 }
-                currentRoom.LockRoom(); // Lock the current room after interaction
-                currentRoom = currentRoom.Exits["west"]; // Return to the Village
-                Console.WriteLine("You return to the Village. The Well is now locked.");
+                
+                else goto default;
                 break;
             
+            
             case "Lab":
-                Console.WriteLine(
-                    "Scientist: Leader, our watter pipes are leaking, damaging my equipment. I've noticed weird health symptoms since this mold started growing everywhere. I need your help, what should I do?\n" +
-                    "1. Repair pipes, remove all mold and ensure good air circulation in building.\n" +
-                    "2. Tell him to go to doctor and get some meds.\n" +
-                    "3. Tell him he looks smart enough to solve this problem himself."
-                );
-                string? labChoice = Console.ReadLine();
-                switch (labChoice)
+                
+                if (labQuest)
                 {
-                    case "1":
-                        Console.WriteLine("You chose the most effective option. You receive an emerald from Scientist.");
-                        inventory.AddItem(new Item("Emerald", "A shiny emerald given by Scientist."));
-                        break;
-                    case "2":
-                        Console.WriteLine("You chose a moderately good option, some maintenance will be required. You receive red powder from Scientist.");
-                        inventory.AddItem(new Item("Red Powder", "A mysterious red powder given by Scientist."));
-                        break;
-                    case "3":
-                        Console.WriteLine("Your option is ineffective and leads to further sickness. Scientist is disappointed.");
-                        break;
-                    default:
-                        Console.WriteLine("Invalid choice. Please choose 1, 2, or 3.");
-                        break;
+                    Console.WriteLine(
+                        "\nScientist: Leader, our water pipes are leaking, damaging my equipment. I've noticed weird health symptoms since this mold started growing everywhere. I need your help, what should I do?\n" +
+                        "1. Repair pipes, remove all mold and ensure good air circulation in building.\n" +
+                        "2. Tell him to cover his machines with plastic and go to doctor to get some meds.\n" +
+                        "3. Tell him he's smart enough to solve it on his own."
+                    );
+                    string? labChoice = Console.ReadLine();
+                    switch (labChoice)
+                    {
+                        case "1":
+                            Console.WriteLine(
+                                "\nYou chose the most effective option. You receive a key from Scientist.");
+                            inventory.AddItem(new Item("Office key", "A key given by Scientist."));
+                            currentRoom.SetDescription("Lab is looking like new and air is fresh. Good job");
+                            break;
+                        case "2":
+                            Console.WriteLine(
+                                "\nYou relieved scientist of his symptoms, but he keeps slowly dying thanks to toxic mold spore exposure.");
+                            inventory.AddItem(new Item("Office key", "A key given by Scientist."));
+                            currentRoom.SetDescription(
+                                "The air around is suffocating you. It hurts in your lungs. You wish to leave this place");
+                            break;
+                        case "3":
+                            Console.WriteLine(
+                                "\nYour option is ineffective and leads to further sickness. Scientist is disappointed.");
+                            break;
+                        default:
+                            Console.WriteLine("\nInvalid choice. Please choose 1, 2, or 3.");
+                            break;
+                    }
+
+                    roomcount--;
+                    labQuest = false;
                 }
+                
+                else goto default;
                 break;
+            
 
             case "Sanitation Area":
-                Console.WriteLine(
-                    "Malik: Leader, this area desperately needs proper sanitation facilities. The villagers are falling ill due to poor hygiene. What should we do?\n" +
-                    "1. Build durable toilets and washing stations using sustainable materials.\n" +
-                    "2. Build temporary latrines while planning permanent facilities.\n" +
-                    "3. Do nothing and tell villagers to manage as they are."
-                );
-                string? sanitationChoice = Console.ReadLine();
-                switch (sanitationChoice)
+
+                if (westQuest)
                 {
-                    case "1":
-                        Console.WriteLine("You chose the most effective option. Malik rewards you with a sapphire.");
-                        inventory.AddItem(new Item("Sapphire", "A radiant sapphire given by Malik."));
-                        break;
-                    case "2":
-                        Console.WriteLine("You chose a moderately good option. Malik provides you with wooden planks for future use.");
-                        inventory.AddItem(new Item("Wooden Planks", "Sturdy planks provided by Malik."));
-                        break;
-                    case "3":
-                        Console.WriteLine("Your decision disappoints Malik and leaves the sanitation area in poor condition.");
-                        break;
-                    default:
-                        Console.WriteLine("Invalid choice. Please choose 1, 2, or 3.");
-                        break;
-                }
-                currentRoom.LockRoom(); // Lock the current room after interaction
-                currentRoom = currentRoom.Exits["east"]; // Return to the Village
-                Console.WriteLine("You return to the Village. The Sanitation Area is now locked.");
+                    Console.WriteLine(
+                        "\nMalik: Leader, this area desperately needs proper sanitation facilities. The villagers are falling ill due to poor hygiene. What should we do?\n" +
+                        "1. Build durable toilets and washing stations using sustainable materials.\n" +
+                        "2. Build temporary latrines while planning permanent facilities.\n" +
+                        "3. Do nothing and tell villagers to manage as they are."
+                    );
+                    string? sanitationChoice = Console.ReadLine();
+                    switch (sanitationChoice)
+                    {
+                        case "1":
+                            Console.WriteLine("\nYou chose the most effective option. Malik rewards you with a sapphire.");
+                            inventory.AddItem(new Item("Sapphire", "A radiant sapphire given by Malik."));
+                            break;
+                        case "2":
+                            Console.WriteLine("\nYou chose a moderately good option. Malik provides you with wooden planks for future use.");
+                            inventory.AddItem(new Item("Wooden Planks", "Sturdy planks provided by Malik."));
+                            break;
+                        case "3":
+                            Console.WriteLine("\nYour decision disappoints Malik and leaves the sanitation area in poor condition.");
+                            break;
+                        default:
+                            Console.WriteLine("\nInvalid choice. Please choose 1, 2, or 3.");
+                            break;
+                    }
+                    roomcount--;
+                    westQuest = false;
+                } 
+                
+                else goto default;
                 break;
 
+            
             default:
-                Console.WriteLine("There's no one here to talk to.");
+                Console.WriteLine("\nThere's no one here to talk to.");
                 break;
         }
     }
     else
     {
-        Console.WriteLine("You're not in a valid room to talk.");
+        Console.WriteLine("\nYou're not in a valid room to talk.");
     }
     break;
 
@@ -205,7 +282,7 @@ namespace WorldOfZuul
                 }
             }
 
-            Console.WriteLine("Thank you for playing World of Zuul!"); //needs to be changed
+            Console.WriteLine("\nThank you for playing World of Zuul!"); //needs to be changed
         }
         
 
@@ -217,11 +294,12 @@ namespace WorldOfZuul
                 {
                     previousRoom = currentRoom;
                     currentRoom = currentRoom?.Exits[direction];
+                    Console.WriteLine("\n"+currentRoom?.LongDescription);
                 }
             }
             else
             {
-                Console.WriteLine($"You can't go {direction}!");
+                Console.WriteLine($"\nYou can't go {direction}!");
             }
         }
 
