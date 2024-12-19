@@ -9,7 +9,8 @@
         public string reqired_item { get; private set; }
         public string dispise_item { get; private set; }
          public bool IsLocked { get; private set; } // New property to indicate if the room is locked
-        public Room( string shortDesc, string Directions , string longDesc, string dispise_item = null, string reqired_item = null)
+        public Room( string shortDesc, string Directions , string longDesc, string dispise_item = null, 
+            string reqired_item = null)
         {
             ShortDescription = shortDesc;
             LongDescription = longDesc;
@@ -125,6 +126,5 @@
         }
 
     }
-    
     
 }
