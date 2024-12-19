@@ -162,7 +162,7 @@ namespace WorldOfZuul
                 {
                     Console.WriteLine("\nCiri: Lets play a game! Can you play Tick Tack Toe? Let's try, " +
                                       "I'm very bad player tho, I's sure you can beat me! \n" +
-                                      "Enter coordinates in format row line  example:1 2\n");
+                                      "Enter coordinates in format column row (example:1 2)\n");
                     if (Ticktack.PlayTickTack())
                     {
                         Console.WriteLine("\nCiri: Wow, you're such a good player! I have a gift for you!");
