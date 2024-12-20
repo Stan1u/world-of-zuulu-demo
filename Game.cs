@@ -35,14 +35,14 @@ namespace WorldOfZuul
                                            "sanitation area on west. There seems to be some passage on north, but " +
                                            "unknown force prevents you from entering",
                 "You are standing in the main area of AquaVale village.");
-            Room? well = new("Well", "\n***ADD YOUR STRING***" ,"You enter the village well. " +
+            Room? well = new("Well", "\nThere is nothing more that needs to be done here. Explore other areas." ,"You enter the village well. " +
                                                                 "The air is heavy with the smell of stagnant water, " +
                                                                 "and you notice algae growing around the edges. " +
                                                                 "A concerned villager named Amara approaches you. " +
                                                                 "She is a local water keeper, deeply invested in the " +
                                                                 "well’s condition. Write 'talk' to talk to Amara", 
                 "Emerald");
-            Room? sanitation_area = new("Sanitation Area", "\n***ADD YOUR STRING***", 
+            Room? sanitation_area = new("Sanitation Area", "\nThere is nothing more that needs to be done here. Explore other areas.", 
                 "The sanitation area is an open plot of land that villagers currently use for waste disposal. "+
                 "The ground is littered with refuse, and a foul smell permeates the air. A young carpenter named " +
                 "Malik approaches you. He’s eager to help but unsure how to proceed. Write 'talk' to talk to Malik");
@@ -153,7 +153,7 @@ namespace WorldOfZuul
 
             case "Village":
                 
-                Console.WriteLine("\nYou talk to yourself, madman?!");
+                Console.WriteLine("\nYou seem to be talking to yourself.");
                 break;
             
             case "Office":
