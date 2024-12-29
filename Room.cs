@@ -70,8 +70,7 @@
                 {
                     if (item.Name == dispise_item)
                     {
-                        Console.WriteLine("You can't enter back");
-                        return false;
+                        return true;
                     }
                 }
                 return true;

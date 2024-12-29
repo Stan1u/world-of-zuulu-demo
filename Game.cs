@@ -46,7 +46,7 @@ namespace WorldOfZuul
                 "local water keeper, deeply invested in the well’s condition. Write 'talk' to talk to Amara", 
                 "Emerald");
             
-            Room? sanitation_area = new("Sanitation Area", "\nYou can see well on east", 
+            Room? sanitation_area = new("Sanitation Area", "\nYou can see well on west", 
                 "The sanitation area is an open plot of land that villagers currently use for waste disposal. "+
                 "The ground is littered with refuse, and a foul smell permeates the air. A young carpenter named " +
                 "Malik approaches you. He’s eager to help but unsure how to proceed. Write 'talk' to talk to Malik");
