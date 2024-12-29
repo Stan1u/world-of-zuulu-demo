@@ -40,7 +40,7 @@ namespace WorldOfZuul
                                            "unknown force prevents you from entering",
                 "You are standing in the main area of AquaVale village.");
             
-            Room? well = new("Well", "\nYou can see sanitation area on east nad village on west",
+            Room? well = new("Well", "\nYou can see sanitation area on east and village on west",
                 "You enter the village well. The air is heavy with the smell of stagnant water, and you " +
                 "notice algae growing around the edges. A concerned villager named Amara approaches you. She is a " +
                 "local water keeper, deeply invested in the well’s condition. Write 'talk' to talk to Amara", 
