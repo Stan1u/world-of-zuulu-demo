@@ -126,6 +126,10 @@ namespace WorldOfZuul
                         Console.WriteLine(currentRoom?.Directions);
                         break;
 
+                    case "map":
+                        Map();
+                        break;
+
                     case "back":
                         if (previousRoom == null||currentRoom == finalRoom)
                             Console.WriteLine("\nYou can't go back from here!");
@@ -444,6 +448,28 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'help' to print this message again.");
             Console.WriteLine("Type 'quit' to exit the game.");
             Console.WriteLine("Type 'show' to display your inventory.");
+            Console.WriteLine("Type 'map' to display your map.");
+        }
+
+        private static void Map()
+        {
+            string map = 
+            
+@"
+  __________________________________________________________
+ |                   ________                               |
+ |                  | Temple |                              |
+ |                  |________|                              |
+ |                       |                                  |                                               
+ |  ____________     _________     ______     ____________  |
+ | | Laboratory |___| Village |___| Well |___| Sanitation | |
+ | |____________|   |_________|   |______|   |____________| |
+ |                       |                                  |
+ |                   _________     _______                  |
+ |                  | Factory |___|Office |                 |
+ |                  |_________|   |_______|                 |
+ |__________________________________________________________|";
+            Console.WriteLine(map);
         }
 
        }
