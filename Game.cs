@@ -14,6 +14,7 @@ namespace WorldOfZuul
         private Inventory_functionality inventory;
         private int roomcount;
         private bool labQuest = true;
+        private bool factoryQuest = true;
         private bool westQuest = true;
         private bool eastQuest = true;
         private bool tickTack = true;
@@ -25,59 +26,53 @@ namespace WorldOfZuul
             
         }
 
+        
         private void CreateRooms()
         {
             //upgraded room descriptions&navigation, add strings to rooms you made
             //// you can put all these long strings from this page in separate cs if you want
             //// it make the code ugly
             
-            Room? village = new("Village", "\nYou see well on east, old building on south and " +
-                "sanitation area on west. There seems to be some passage on north, but " +
-                "unknown force prevents you from entering",
-                "You are standing in the main area of AquaVale village.");
-
-
-            Room? well = new("Well", "\nThere is nothing more that needs to be done here. Explore other areas." ,"You enter the village well. " +
-                "The air is heavy with the smell of stagnant water, " +
-                "and you notice algae growing around the edges. " +
-                "A concerned villager named Amara approaches you. " +
-                "She is a     local water keeper, deeply invested in the " +
-                "well’s condition. Write 'talk' to talk to Amara", 
-                "Emerald");
-
-
-            Room? sanitation_area = new("Sanitation Area", "\nThere is nothing more that needs to be done here. Explore other areas.", 
-                "The sanitation area is an open plot of land that villagers currently use for waste disposal. "+
-                "The ground is littered with refuse, and a foul smell permeates the air. A young carpenter named" +
-                "Malik approaches you. He’s eager to help but unsure how to proceed. Write 'talk' to talk to Malik");
-
-
-            Room? lab = new("Lab","\nYou see office door on east and village on north" ,
+            //room for volkan
+            Room? lab = new Room("Laboratory", "You can see village on east",
                 "You're in a computing lab full of water samples." +
                 "There is only one person who looks like a mad scientist. He starts talking about how over  2  billion  people lack  access  to  safe" +
                 " drinking  water and how that leads to over 485.000 people dying along side with a million seabirds and marine life every year!" + 
                 "He needs a companion to continue his research. Write 'talk' to talk to the Mad Scientist",
-                "", "Water Quality Tester"); 
-
-
-            Room? office = new("Office", "Direction?", "You've entered an administration office." +//get direction of office
-                "A lot of people are working on financial problems caused by water polution such as health cost, agriculture, fishing industry etc." +
-                "You are greeted by the finance manager of AquaVale village - Ethan. He's in need of you assistance! Write 'talk' to talk to Ethan",
-                "", "Briefcase");
-
-
-            Room? underground_area = new("Underground Area","You see a weird staircase leading you to a door on east and village on north" ,//make it south-east or somet
-                "You entered the sewer lines, the floor is wet due to the corroded pipes leakage. It looks like it is abandoned. You hear someone screaming for help, " +
-                "Following the voice you find a kid who got lost. Her name is Barbara." +
-                "While showing her the way out she starts talking about how the groundwater is contaminated with toxinc substances due to the corrosion and leakage" + 
-                "Barbara also mentions that her mother arsentic poisoning because of the water...",
-                "", "Wrench");
-
-
+                "", "Water Quality Tester");
+            
+            Room? village = new("Village", "\nYou see well on east, old building on south and " +
+                                           "laboratory on west. There seems to be some passage on north, but " +
+                                           "unknown force prevents you from entering",
+                "You are standing in the main area of AquaVale village.");
+            
+            Room? well = new("Well", "\nYou can see sanitation area on east and village on west",
+                "You enter the village well. The air is heavy with the smell of stagnant water, and you " +
+                "notice algae growing around the edges. A concerned villager named Amara approaches you. She is a " +
+                "local water keeper, deeply invested in the well’s condition. Write 'talk' to talk to Amara", 
+                "Emerald");
+            
+            Room? sanitation_area = new("Sanitation Area", "\nYou can see well on west", 
+                "The sanitation area is an open plot of land that villagers currently use for waste disposal. "+
+                "The ground is littered with refuse, and a foul smell permeates the air. A young carpenter named " +
+                "Malik approaches you. He’s eager to help but unsure how to proceed. Write 'talk' to talk to Malik");
+            
+            Room? factory = new("Factory","\nYou see office door on east and village on north" ,
+                "You entered old building, it looks like some kind of ancient factory. Air is very humid, " +
+                "you noticed watter dripping from ceiling and mold growing on surrounding objects. Old man in black " +
+                "coat is operating some machinery, he looks busy. Write 'talk' to start conversation"  ); 
+                  
+            
+            Room? office = new("Office", "\nYou see some smart device. It introduced itself as Ciri. "+
+                                         "It asked you to talk with it, if you want to play a game. Exit to lab " +
+                                         "is on east" ,"You entered an office. Everything looks normal, but " +
+                                                       "atmosphere here gives you goosebumps, something feels off.", 
+                "", "Office key");
+            
             Room? finalRoom = new("Mysterious Temple", "\nYou can see alien looking machine. " +
-                "You never saw anything like that, it seems like from future. " +
-                "It looks intelligent. It is watching you. The exit to village "+
-                "disappeared. There is no way back.", "You entered " +
+                                                       "You never saw anything like that, it seems like from future. " +
+                                                       "It looks intelligent. It is watching you. The exit to village "+
+                                                       "disappeared. There is no way back.", "You entered " +
                 "mysterious room which wasn't there few moments back. It looks like some kind of temple." );
 
             roomcount = 4; //zones that need to be completed before unlocking final room
@@ -86,11 +81,12 @@ namespace WorldOfZuul
             this.village = village;
             this.finalRoom = finalRoom;
 
-            village.SetExits(null, well, lab, sanitation_area);
-            well.SetExit("west", village);
-            sanitation_area.SetExit("east", village);
-            lab.SetExits(village, office, null, null);
-            office.SetExit("west", lab);
+            village.SetExits(null, well, factory, lab);
+            well.SetExits(null, sanitation_area, null, village);
+            sanitation_area.SetExit("west", well);
+            factory.SetExits(village, office, null, null);
+            office.SetExit("west", factory);
+            lab.SetExit("south", null);
 
             currentRoom = village;
         }
@@ -173,7 +169,58 @@ namespace WorldOfZuul
                 
                 Console.WriteLine("\nYou seem to be talking to yourself.");
                 break;
+
+            case "Laboratory":
+                
+                if (labQuest)
+                {
+                    Console.WriteLine(
+                "Mad Scientist: The number of deseases in the water is rising rapidly. We need to find a solution fast!!!\n" + 
+                "1. Develop chemical water treatment methonds by using chemicals to remove impurities and pathogens.\n" +
+                "2. Provide testing kits to the community to monitor water contamination.\n" +
+                "3. Tell him that you don't help crazy people!"
+            );
+                    
+                    bool wronganswer = true;
+                    while (wronganswer)
+                    {
+                        wronganswer = false;
+                        string? labChoice = Console.ReadLine();
+                        switch (labChoice)
+                        {
+                            case "1":
+                                Console.WriteLine("You chose the most effective option. The Mad Scientist gives you water purifying chemical");
+                                inventory.AddItem(new Item("Water Purifying Chemical", "Mix it with contaminated water and watch the magic happen!"));
+                                currentRoom.SetDescription("Lab is looking like new and air is fresh. " +
+                                                           "Good job");
+                                break;
+                            case "2":
+                                Console.WriteLine("You chose a moderately good option. You are given a Water Test Kit from the Mad Scientist");
+                                inventory.AddItem(new Item("Water Test Kit", "Kit which can be used for testing clarity of water!"));//the item description doesnt show 
+                                currentRoom.SetDescription(
+                                    "The air around is suffocating you. It hurts in your lungs. " +
+                                    "You wish to leave this place");
+                                break;  
+                            case "3":
+                                Console.WriteLine(
+                                    "\nYour option is ineffective and leads to further sickness. " +
+                                    "Scientist is disappointed.");
+                                break;
+                            default:
+                                Console.WriteLine("\nInvalid choice. Please choose 1, 2, or 3.");
+                                wronganswer = true;
+                                break;
+                        } 
+                        
+                    }
+                            roomcount--;
+                            labQuest = false;
+                }
+                
+                else goto default;
+                break;
             
+                          
             case "Office":
                 
                 if (tickTack)
@@ -226,16 +273,22 @@ namespace WorldOfZuul
                                 Console.WriteLine("\nYou chose the most effective option. " +
                                                   "You receive an emerald from Amara.");
                                 inventory.AddItem(new Item("Emerald", "A shiny emerald given by Amara."));
+                                currentRoom.SetDescription("Well was replaced by tap with " +
+                                                           "modern water filtration system.");
                                 break;
                             case "2":
                                 Console.WriteLine("\nYou chose a moderately good option, some maintenance will be " +
                                                   "required. You receive red powder from Amara.");
                                 inventory.AddItem(new Item("Red Powder", 
                                     "A mysterious red powder given by Amara."));
+                                currentRoom.SetDescription("Well is nice and clean");
                                 break;
                             case "3":
                                 Console.WriteLine("\nYour option is ineffective and leads to further sickness in the " +
                                                   "village. Amara is disappointed.");
+                                currentRoom.SetDescription("\"You enter the village well. The air is heavy " +
+                                                           "with the smell of stagnant water, and you notice algae " +
+                                                           "growing around the edges.");
                                 break;
                             default:
                                 Console.WriteLine("\nInvalid choice. Please choose 1, 2, or 3.");
@@ -252,51 +305,55 @@ namespace WorldOfZuul
                 break;
             
             
-            case "Lab":
+            case "Factory":
                 
-                if (labQuest)
+                if (factoryQuest)
                 {
                     Console.WriteLine(
-                "Mad Scientist: The number of deseases in the water is rising rapidly. We need to find a solution fast!!!\n" + 
-                "1. Develop chemical water treatment methonds by using chemicals to remove impurities and pathogens.\n" +
-                "2. Provide testing kits to the community to monitor water contamination.\n" +
-                "3. Tell him that you don't help crazy people!"
-            );
+                        "\nOld man: Leader, our water pipes are leaking, damaging my equipment. I've noticed weird "+
+                        "health symptoms since this mold started growing everywhere. " +
+                        "I need your help, what should I do?\n" +
+                        "1. Repair pipes, remove all mold and ensure good air circulation in building.\n" +
+                        "2. Tell him to cover his machines with plastic and go to doctor to get some meds.\n" +
+                        "3. Tell him he's smart enough to solve it on his own."
+                    );
                     
                     bool wronganswer = true;
                     while (wronganswer)
                     {
                         wronganswer = false;
-                        string? labChoice = Console.ReadLine();
-                        switch (labChoice)
+                        string? factoryChoice = Console.ReadLine();
+                        switch (factoryChoice)
                         {
                             case "1":
-                                Console.WriteLine("You chose the most effective option. The Mad Scientist gives you water purifying chemical");
-                                inventory.AddItem(new Item("Water Purifying Chemical", "Mix it with contaminated water and watch the magic happen!"));
-                                currentRoom.SetDescription("Lab is looking like new and air is fresh. " +
+                                Console.WriteLine(
+                                    "\nYou chose the most effective option. You receive a key from old man.");
+                                inventory.AddItem(new Item("Office key", "A key given by old man."));
+                                currentRoom.SetDescription("Factory is looking like new and air is fresh. " +
                                                            "Good job");
                                 break;
                             case "2":
-                                Console.WriteLine("You chose a moderately good option. You are given a Water Test Kit from the Mad Scientist");
-                                inventory.AddItem(new Item("Water Test Kit", "Kit which can be used for testing clarity of water!"));//the item description doesnt show 
+                                Console.WriteLine(
+                                    "\nYou relieved old man of his symptoms, but he keeps slowly dying thanks to " +
+                                    "toxic mold spore exposure.");
+                                inventory.AddItem(new Item("Office key", "A key given by old man."));
                                 currentRoom.SetDescription(
                                     "The air around is suffocating you. It hurts in your lungs. " +
                                     "You wish to leave this place");
-                                break;  
+                                break;
                             case "3":
                                 Console.WriteLine(
                                     "\nYour option is ineffective and leads to further sickness. " +
-                                    "Scientist is disappointed.");
+                                    "Old man is disappointed.");
                                 break;
                             default:
                                 Console.WriteLine("\nInvalid choice. Please choose 1, 2, or 3.");
                                 wronganswer = true;
                                 break;
                         }
-                    
                     }
-                            roomcount--;
-                            labQuest = false;
+                    roomcount--;
+                    factoryQuest = false;
                 }
                 
                 else goto default;
@@ -327,16 +384,23 @@ namespace WorldOfZuul
                                                   "Malik rewards you with a sapphire.");
                                 inventory.AddItem(new Item("Sapphire", 
                                     "A radiant sapphire given by Malik."));
+                                currentRoom.SetDescription("Modern toilets and showers replaced hole in the " +
+                                                           "ground and pond of rotting watter. Good job");
                                 break;
                             case "2":
                                 Console.WriteLine("\nYou chose a moderately good option. " +
                                                   "Malik provides you with wooden planks for future use.");
                                 inventory.AddItem(new Item("Wooden Planks", 
                                     "Sturdy planks provided by Malik."));
+                                currentRoom.SetDescription("New latrines smell as bad as hole in the ground " +
+                                                           "they used before. But at least it looks better and " +
+                                                           "people dont fall inside");
                                 break;
                             case "3":
                                 Console.WriteLine("\nYour decision disappoints Malik and leaves the sanitation " +
                                                   "area in poor condition.");
+                                currentRoom.SetDescription("The ground is littered with refuse, and " +
+                                                           "a foul smell permeates the air.");
                                 break;
                             default:
                                 Console.WriteLine("\nInvalid choice. Please choose 1, 2, or 3.");
@@ -344,8 +408,8 @@ namespace WorldOfZuul
                                 break;
                         }
                     }
-                     roomcount--;
-                        westQuest = false;
+                    roomcount--;
+                    westQuest = false;
                 } 
                 
                 else goto default;
@@ -440,6 +504,6 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'show' to display your inventory.");
         }
 
+       }
     }
-}
     
