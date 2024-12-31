@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KM5h9/6J9zY=",
+  "dgSpecHash": "IwveM1ZsBS0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Me\\Documents\\GitHub\\world-of-zuulu-demo_newroom\\WorldOfZuul.csproj",
+  "projectFilePath": "C:\\Users\\Me\\Desktop\\world-of-zuulu-demo-main\\WorldOfZuul.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Me\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
     "C:\\Users\\Me\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
