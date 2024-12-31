@@ -13,6 +13,7 @@ namespace WorldOfZuul
         private Room? temp;
         private Inventory_functionality inventory;
         private int roomcount;
+        private bool labQuest = true;
         private bool factoryQuest = true;
         private bool westQuest = true;
         private bool eastQuest = true;
@@ -32,8 +33,13 @@ namespace WorldOfZuul
             //// you can put all these long strings from this page in separate cs if you want
             //// it make the code ugly
             
-            //room for volkan
-            Room? lab = new Room("Laboratory", "Laboratory", "Laboratory");
+            Room? lab = new Room("Laboratory", "\nYou can see village on east",
+                "You're in a computing lab full of water samples." +
+                "There is only one person who looks like a mad scientist. He starts talking about how over " +
+                "2 billion people lack  access  to  safe" +
+                " drinking  water and how that leads to over 485.000 people dying along side with " +
+                "a million seabirds and marine life every year!" + 
+                "He needs a companion to continue his research. Write 'talk' to talk to the Mad Scientist");
             
             Room? village = new("Village", "\nYou see well on east, old building on south and " +
                                            "laboratory on west. There seems to be some passage on north, but " +
@@ -69,7 +75,7 @@ namespace WorldOfZuul
                                                        "disappeared. There is no way back.", "You entered " +
                 "mysterious room which wasn't there few moments back. It looks like some kind of temple." );
 
-            roomcount = 3; //zones that need to be completed before unlocking final room
+            roomcount = 4; //zones that need to be completed before unlocking final room
                            //increase if u add some main quest rooms, make it -- when you complete the room
                            
             this.village = village;
@@ -195,6 +201,66 @@ namespace WorldOfZuul
                 
                 break;
 
+            case "Laboratory":
+                
+                if (labQuest)
+                {
+                    Console.WriteLine(
+                "Mad Scientist: The number of deseases in the water is rising rapidly. " +
+                "We need to find a solution fast!!!\n" + 
+                "1. Develop chemical water treatment methonds by using chemicals to remove impurities and pathogens.\n"+
+                "2. Provide testing kits to the community to monitor water contamination.\n" +
+                "3. Tell him that you don't help crazy people!");
+                    
+                    bool wronganswer = true;
+                    while (wronganswer)
+                    {
+                        wronganswer = false;
+                        string? labChoice = Console.ReadLine();
+                        switch (labChoice)
+                        {
+                            case "1":
+                                Console.WriteLine("You chose the most effective option. The Mad Scientist gives " +
+                                                  "you water purifying chemical");
+                                inventory.AddItem(new Item("Water Purifying Chemical", "Mix it with " +
+                                    "contaminated water and watch the magic happen!"));
+                                currentRoom.SetDescription("Lab is looking like new and air is fresh. " +
+                                                           "Good job");
+                                currentRoom.SetDescription("All water in village is now safe to drink.");
+                                break;
+                            case "2":
+                                Console.WriteLine("You chose a moderately good option. You are given a Water Test " +
+                                                  "Kit from the Mad Scientist");
+                                inventory.AddItem(new Item("Water Test Kit", "Kit which can be used " +
+                                                                             "for testing clarity of water!"));
+                                currentRoom.SetDescription(
+                                    "The air around is suffocating you. It hurts in your lungs. " +
+                                    "You wish to leave this place");
+                                currentRoom.SetDescription("Everyone can test his own water, " +
+                                                           "people are lazy tho.");
+                                break;  
+                            case "3":
+                                Console.WriteLine(
+                                    "\nYour option is ineffective and leads to further sickness. " +
+                                    "Scientist is disappointed.");
+                                currentRoom.SetDescription("You're bad person!");
+                                break;
+                            default:
+                                Console.WriteLine("\nInvalid choice. Please choose 1, 2, or 3.");
+                                wronganswer = true;
+                                break;
+                        } 
+                        
+                    }
+                    
+                    roomcount--;
+                    labQuest = false;
+                }
+                            
+                
+                else goto default;
+                break;
+            
             
             case "Well":
                 
