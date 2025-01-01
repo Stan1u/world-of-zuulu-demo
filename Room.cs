@@ -41,16 +41,6 @@
                 Exits[direction] = neighbor;
         }
 
-         public void LockRoom()
-        {
-            IsLocked = true; // Lock the room
-        }
-
-        public void UnlockRoom()
-        {
-            IsLocked = false; // Unlock the room
-        }
-
         public bool Check(Inventory_functionality inventory)
         {
             if (IsLocked)
