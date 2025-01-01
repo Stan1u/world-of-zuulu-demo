@@ -44,6 +44,10 @@ public class Inventory_functionality
         items.Remove(item);
             Console.WriteLine($"Item {item.Name} removed ");
     }
+    public bool HasItem(string itemName)
+    {
+        return items_holder.Any(item => item.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+    }
     public void ShowItems()
     {
         Console.WriteLine("Inventory Items:");
