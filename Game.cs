@@ -462,11 +462,7 @@ namespace WorldOfZuul
                         Console.WriteLine("I don't know that command.");
                         break;
                 }
-            }
-
-            Console.WriteLine("\nThank you for playing World of Zuul!"); //needs to be changed
-        }
-        
+            }}
 
         private void Move(string direction)
         {
