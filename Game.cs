@@ -69,11 +69,10 @@ namespace WorldOfZuul
                                                        "atmosphere here gives you goosebumps, something feels off.", 
                 "", "Office key");
             
-            Room? finalRoom = new("Mysterious Temple", "\nYou can see alien looking machine. " +
-                                                       "You never saw anything like that, it seems like from future. " +
-                                                       "It looks intelligent. It is watching you. The exit to village "+
-                                                       "disappeared. There is no way back.", "You entered " +
-                "mysterious room which wasn't there few moments back. It looks like some kind of temple." );
+            Room? finalRoom = new("Water Temple", "\nHere you are able to see your results: " +
+                                                       "Did you manage to save the village? Or could you do better? " +
+                                                       "Press 'talk' one final time to see how you did", "You have gained access " +
+                "to The Water Temple of the village, since you finished all the tasks. Try to explore to see your results." );
 
             roomcount = 4; //zones that need to be completed before unlocking final room
                            //increase if u add some main quest rooms, make it -- when you complete the room
@@ -82,6 +81,7 @@ namespace WorldOfZuul
             this.finalRoom = finalRoom;
 
             village.SetExits(null, well, factory, lab);
+            lab.SetExit("east", village);
             well.SetExits(null, sanitation_area, null, village);
             sanitation_area.SetExit("west", well);
             factory.SetExits(village, office, null, null);
@@ -156,15 +156,72 @@ namespace WorldOfZuul
             
             //we can add multiple endings based on items you earn from quests
             
-            case "Mysterious Temple":
+            case "Water Temple":
+               int score = 0;//12 in total
+
+                if(inventory.HasItem("Water Purifying Chemical"))//lab best
+                {
+                    score += 2;
+                    Console.WriteLine("You cleaned the water by using Water Purifying Chemical for the people of the village!");
+                }
                 
-                Console.WriteLine(
-                    "\nThe machine telepathically welcomes you. You can feel it's incredibly powerful presence. " +
-                    "It thanks you for making the world better place. It'll reward you.\n" +
-                    "The rift appears in the air and sucks you in to the Void. Your sense of self disappears. " +
-                    "You're everything. You're nothing. You're enjoying peaceful emptiness for eternity.\n\n" +
-                    "GAME OVER"
-                );
+                if(inventory.HasItem("Water Test Kit"))//lab mid
+                {
+                    score += 1;
+                    Console.WriteLine("You analyze the quality of water by using Water Test Kit but the water is still contaminated."); 
+                }
+
+                if(inventory.HasItem("Emerald"))//well best 
+                {
+                    score += 2;
+                    Console.WriteLine("You installed high-quality water filtration system that effectively removes contaminants and impuritiesfrom the water!");
+                }
+
+                if(inventory.HasItem("Red Powder"))//well mid
+                {
+                    score += 1;
+                    Console.WriteLine("Educating the villagers how to clean the well is a good idea but not so efficient and it is a temporary solution.");
+                }
+                 
+                if(inventory.HasItem("Diamond"))//office
+                {
+                    score += 1;
+                }
+
+                if(inventory.HasItem("Office key"))//factory
+                {
+                    score += 2;
+                    Console.WriteLine("By repairing the pipelines you ensure that no dirt and bacteria from outside will enter the system.");
+                }
+
+                if(inventory.HasItem("Sapphire"))//sanitation area best
+                {
+                    score += 2;
+                    Console.WriteLine("By building durable toilets and washing stations the water usage gets increased significantly!");
+                }
+
+                if(inventory.HasItem("Wooden Planks"))//sanitation area mid
+                {
+                    score += 1;
+                    Console.WriteLine("It is not the best idea to build temporary toilets and washing stations since they polute nature\n and are a temporary answer to a long term problem.");
+                }
+
+                if(score<= 6)
+                {
+                    Console.WriteLine("You did not manage to save the village. But don't worry you have learned a lot! Until next time.");
+                }
+                else if(score > 6 && score < 9)
+                {
+                    Console.WriteLine("You saved the villgae temporary. But don't worry you have learned a lot! Until next time.");
+                }
+                else if(score  > 9 && score < 12)
+                {
+                    Console.WriteLine("CONGRATULATIONS you saved the villge. And still managed to learn something! Until next time.");
+                }
+                else
+                {
+                    Console.WriteLine("CONGRATULATIONS you saved the villge! The locals can sleep in pice thanks to you!");
+                }
                 Environment.Exit(1);
                 break;
 
