@@ -1,0 +1,7 @@
+namespace idk
+{
+    class idktoo
+    {
+        
+    }
+}

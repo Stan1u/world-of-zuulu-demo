@@ -27,3 +27,4 @@ C:\Users\Patryk\Desktop\WorldOfZuul\WorldOfZuul\obj\Debug\net6.0\refint\WorldOfZ
 C:\Users\Patryk\Desktop\WorldOfZuul\WorldOfZuul\obj\Debug\net6.0\WorldOfZuul.pdb
 C:\Users\Patryk\Desktop\WorldOfZuul\WorldOfZuul\obj\Debug\net6.0\WorldOfZuul.genruntimeconfig.cache
 C:\Users\Patryk\Desktop\WorldOfZuul\WorldOfZuul\obj\Debug\net6.0\ref\WorldOfZuul.dll
+C:\Users\Patryk\Desktop\WorldOfZuul\WorldOfZuul\obj\Debug\net6.0\WorldOfZuul.sourcelink.json
